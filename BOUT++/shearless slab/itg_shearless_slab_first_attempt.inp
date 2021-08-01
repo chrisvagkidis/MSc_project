@@ -1,0 +1,54 @@
+#
+# Input file for the ITG-slab model
+#
+
+nout = 10	# number of output timesteps
+timestep = 0.2 	# time between outputs
+
+###################################################
+
+[mesh]
+
+nx = 64
+ny = 64
+nz = 64
+
+dx = 0.2
+dy = 0.2
+dz = 0.2
+
+symmetricGlobalX = true
+symmetricGlobaly = true
+symmetricGlobalz = true
+
+#################################################
+
+[ITG-slab]	# Settings for the ITG-slab model
+
+mi = 1.0	# ion mass set to 1
+e = 1.0		# elementary charge set to 1
+
+Ni0 = 1.0 	# equilibrium ion density
+Te = 1.0	# electron temperature
+Ti0 = 1.0	# equilibrium ion temperature
+
+###################################################
+[All] 
+scale = 0.0	# default size of initial perturbations
+
+
+###################################################
+[Ti]	# perturbation ion temperature
+
+scale = 1.0			# size of initial perturbation
+function = cos(x)*cos(y)*cos(z)	# the form of the initial perturbation
+
+
+
+# boundary conditions
+---------------------
+# dirichlet -> zero value
+# neumann -> zero gradient
+# zerolaplace -> Laplacian = 0, decaying solution
+# constlaplace -> Laplacian = const, decaying solution
+
