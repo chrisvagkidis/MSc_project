@@ -1,0 +1,92 @@
+#
+# Input file for the ITG-slab model
+# !! this is for normalised equations !!
+#
+
+nout = 1000	# number of output timesteps
+timestep = 0.1	# time between outputs
+
+###################################################
+
+MXG = 1
+zperiod = 1
+
+[output]
+openclose = false
+flush = false
+
+[restart]
+openclose = false
+flush = false
+
+###################################################
+
+[mesh]
+
+nx = 3
+ny = 32
+nz = 32
+
+dy = 1.0
+
+#################################################
+
+# derivative methods
+
+[ddy]
+first = C4
+second = C4
+upwind = W3
+
+[ddz]
+first = C4
+second = C4
+upwind = W3
+
+################################################
+
+[ITG-slab]	# Settings for the ITG-slab model
+
+mi = 1.67e-27	# kg, ion mass (proton)
+e = 1.6e-19	# C, elementary charge 
+
+Ni0 = 1.0	# normalised equilibrium ion density
+Te = 1.0	# eV, electron temperature
+Ti0 = 1.0	# normalised equilibrium ion temperature
+LrefLT = 40.0	# reference teperature scale
+hypdif = 50.0	# hyperdiffusion parameter for dissipation
+
+
+###################################################
+[All] 
+scale = 0.0	# default size of initial perturbations
+bndry_all = none
+
+
+###################################################
+[Ti]	# perturbation ion temperature
+
+scale = 1.0				# size of the initial perturbation
+Ti0 = 1.0
+delta = 1.0e-5					
+function = Ti0*0 + delta*cos(y)*cos(4*z)	# the form of the initial perturbation
+
+####################################################
+[Ni]
+
+scale = 1.0			# size of initial perturbation
+delta = 1.0e-5
+function = 0 + delta*cos(y)*cos(4*z) # form of initial perturbation
+
+#####################################################
+[vi]
+scale = 0.0
+delta = 1.0e-5
+function = 0 + delta*cos(y)*cos(4*z) # form of the initial perturbation
+
+# boundary conditions
+---------------------
+# dirichlet -> zero value
+# neumann -> zero gradient
+# zerolaplace -> Laplacian = 0, decaying solution
+# constlaplace -> Laplacian = const, decaying solution
