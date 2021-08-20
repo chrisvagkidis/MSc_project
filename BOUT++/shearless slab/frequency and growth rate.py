@@ -12,6 +12,7 @@ ds = open_boutdataset('BOUT.dmp.*.nc', inputfilepath='BOUT.inp')
 plt.rcParams["figure.figsize"] = (7, 4)
 plt.rcParams.update({"font.size": 10})
 
+# assign variables
 Ti = ds['Ti'] # assign ion temperature
 Ni = ds['Ni'] # assign ion density
 time = ds['t'] # assign time
@@ -27,19 +28,20 @@ Ni_region = Ni[500:, 1, 16, 4]
 time_region_omega = time[500:]
 
 # guesses for (cosine) fit
-amplit = 0.000003
-
-freq = 0.8
-c = 1
+amplit = 0.000003 # amplitude
+freq = 0.8 # frequency
+c = 1 # phase
 
 def linear_fit(x, a, b):
     return a*x+b
 
+# linear fit for the growth rate
 popt, pcov = curve_fit(linear_fit, time_region_gamma,np.log(np.abs(phi_region)))
 
 slope = popt[0]
 gamma_st_dev = np.sqrt(pcov[0][0])
 
+# plot phi against time and the fit
 plt.plot(time_region_gamma, np.log(np.abs(phi_region)), label='data')
 plt.plot(time_region_gamma, linear_fit(time_region_gamma, *popt),'--', label='fitting')
 plt.xlabel('t')
