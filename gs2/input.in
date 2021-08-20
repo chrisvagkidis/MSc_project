@@ -1,0 +1,113 @@
+!BOUT normalised in c_s, GS2 in vth_ref=Sqrt(2)*c_s
+!Note: ky in GS2 relates to kz in BOUT
+&theta_grid_parameters
+ ntheta  = 16
+ nperiod = 1
+ eps     = 0.0 !r/R=0
+ epsl    = 0.0 !
+ kp      = 0.19634954 !2*Pi/32.0
+! kp=0.20268340 !2*Pi/31.0
+! kp=0.19039955 !2*Pi/33.0
+!Sets kpar (box length) in GS2 (ky in BOUT), matching BOUT with:
+!ny=32
+!dy=1.0
+!=>ly=32.0
+!ys_mode=1
+!=>ky=2*!DPI/ly
+ shat    = 0.0 /
+&dist_fn_knobs
+ adiabatic_option = 'field-line-average-term'
+ boundary_option  = 'periodic'
+ /
+&parameters
+ beta = 0.0
+ tite = 1.0 !Remember for adiabatic ions this is really teti
+ /
+&kt_grids_knobs
+ grid_option='single'
+/
+
+&kt_grids_single_parameters
+ aky     = 5.6569 !sqrt(2.0)*4.0
+ theta0  = 0.0
+/
+
+&gs2_diagnostics_knobs
+ write_ascii        = .false.
+ write_omega        = .TRUE.
+ write_omavg        = .true.
+ write_final_fields = .TRUE.
+ write_eigenfunc    = .TRUE.
+ nwrite             = 1
+ navg               = 20
+ omegatol           = 1.0e-3
+ omegatinst         = 500.0
+/
+
+&le_grids_knobs
+ ngauss = 8
+ negrid = 8
+/
+
+&knobs
+ do_eigsolve = .false.
+ fphi   = 1.0
+ fapar  = 0.0
+ faperp = 0.0
+ delt   = 0.35
+ nstep  = 1000 !8000
+/
+
+&collisions_knobs
+ collision_model='none'
+/
+
+&species_knobs
+ nspec= 1
+/
+
+&species_parameters_1
+ z     = 1.0000
+ mass  = 1.0
+ dens  = 1.0000e+00
+ temp  = 1.0000e+00
+ tprim = 10 ! This is the Lref/LT value 
+ fprim = 0.0
+ uprim = 0.0000000
+ vnewk = 0.0
+ type  = 'ion'
+ bess_fac = 0.0
+/
+
+&dist_fn_species_knobs_1
+ fexpr = 0.5
+ bakdif= 0.0
+/
+
+&theta_grid_knobs
+ equilibrium_option='s-alpha'
+/
+
+&theta_grid_salpha_knobs
+ model_option='no-curvature' !Slab
+/
+
+&layouts_knobs
+ layout = 'xyles'
+ opt_redist_nbk  = .true.
+ intmom_sub      = .true.
+ intspec_sub     = .true.
+ local_field_solve = .true.
+/
+
+&fields_knobs
+ field_subgath   = .true.
+ field_option    = 'implicit'
+/
+
+&init_g_knobs
+ ginit_option= "single_parallel_mode"
+ ikpar_init = 1 !Means kpar (ky of BOUT) is kp
+ phiinit=   1.e-5
+ chop_side= F
+/
